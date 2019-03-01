@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<title>タイトル</title>
+</head>
+<body>
+  <div>
+	  <div class="container">
+		  <div class="row">
+			  <div class="col-lg-2">
+				  <ul class="list-group">
+					  <%= erb :_count_due, locals: {title: "TOP", url: "/", menus: Menu.all} %>
+						<% @lists.each do |list| %>
+						  <%= erb :_count_due, locals: {title: list.name, url: "/?list=#{list.id}", menus: list.menus} %>
+						<% end %>
+					</ul>
+				</div>
+				<div class="col-lg-10">
+			  <table class="table-striped table-bordered table-hover">
+				  <thead>
+					  <tr>
+						  <th style="padding: 20px;">title</th>
+							<th style="padding: 20px;">material</th>
+							<th style="padding: 20px;">howto</th>
+							<th style="padding: 20px;">time</th>
+							<th style="padding: 20px;">remove</th>
+							<th style="padding: 20px;">arrange</th>
+							<th style="padding: 20px;">favorite</th>
+						</tr>
+					</thead>
+					<tbody>
+					  <% @menus.each do |menu| %>
+						  <tr>
+							  <td><%= CGI.escapeHTML(menu.title) %></td>
+								<td><%= menu.material %></td>
+								<td><%= menu.howto %></td>
+								<td><%= menu.list.name %></td>
+								<td>
+								  <form action="/menus/<%= menu.id %>/delete" method="post">
+									  <input type="submit" value="削除">
+									</form>
+								</td>
+								<td>
+								  <a href="/menus/<%= menu.id %>/edit">編集</a>
+								</td>
+								<td>
+								  <a href="/menus/<%= menu.id %>/star" style="
+									<% if menu.star %>
+									  background-color: red;
+									<% else %>
+									  background-color: #fff;
+									<% end %>
+									  border: 1px solid black;
+										height: 10px;
+										width: 10px;
+										display: block;
+									"></a>
+								</td>
+							</tr>
+						<% end %>
+						<tr>
+						  <td colspan="6">
+							  <a href="/menus/new">new recipe</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
